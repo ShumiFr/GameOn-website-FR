@@ -10,39 +10,61 @@ function editNav() {
   }
 }
 
-// Récupération des éléments du DOM
-const modalbg = document.querySelector(".bground"); // Fond de la modale
-const modalBtn = document.querySelectorAll(".modal-btn"); // Boutons pour ouvrir la modale
-const formData = document.querySelectorAll(".formData"); // Données du formulaire
-const modalClose = document.querySelector(".close"); // Bouton pour fermer la modale
+document.addEventListener("DOMContentLoaded", function () {
+  // Récupération des éléments du DOM
+  const modalbg = document.querySelector(".bground"); // Fond de la modale
+  const modalBtn = document.querySelectorAll(".modal-btn"); // Boutons pour ouvrir la modale
+  const formData = document.querySelectorAll(".formData"); // Données du formulaire
+  const modalClose = document.querySelector(".close"); // Bouton pour fermer la modale
 
-// Événement pour ouvrir et fermer la modale
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-modalClose.addEventListener("click", closeModal);
+  // Événement pour ouvrir et fermer la modale
+  modalBtn.forEach((btn) =>
+    btn.addEventListener("click", launchModal)
+  );
+  modalClose.addEventListener("click", closeModal);
 
-var modal = document.querySelector(".content"); // Contenu de la modale
+  var modal = document.querySelector(".content"); // Contenu de la modale
 
-// Fonction pour fermer la modale
-function closeModal() {
-  modal.classList.add("closing"); // Ajoute la clase pour l'animation de fermeture
-  modal.classList.remove("opening"); // Supprime la classe pour l'animation d'ouverture
+  // Fonction pour fermer la modale
+  function closeModal() {
+    modal.classList.add("closing"); // Ajoute la clase pour l'animation de fermeture
+    modal.classList.remove("opening"); // Supprime la classe pour l'animation d'ouverture
 
-  // Ferme la modale après l'animation de fermeture
-  setTimeout(function () {
-    modalbg.style.display = "none";
-    modal.classList.remove("closing");
-  }, 500);
-}
+    // Réinitialise les champs du formulaire
+    var firstName = document.getElementById("first");
+    var lastName = document.getElementById("last");
+    var email = document.getElementById("email");
+    var birthdate = document.getElementById("birthdate");
+    var quantity = document.getElementById("quantity");
+    var radios = document.querySelectorAll('input[name="location"]');
+    var terms = document.getElementById("checkbox1");
 
-// Fonction pour ouvrir la modale
-function launchModal() {
-  modalbg.style.display = "block"; // Affiche la modale
-  modal.classList.add("opening"); // Ajoute l'animation d'ouverture
+    // Si (firstName) existe, alors le valeur est réinitialisé à vide
+    if (firstName) firstName.value = "";
+    if (lastName) lastName.value = "";
+    if (email) email.value = "";
+    if (birthdate) birthdate.value = "";
+    if (quantity) quantity.value = "";
+    if (radios) radios.forEach((radio) => (radio.checked = false));
+    if (terms) terms.checked = false;
 
-  // Désactive le bouton de soumission lorsque la modale est ouverte
-  submitButton.disabled = true;
-  submitButton.style.backgroundColor = "grey";
-}
+    // Ferme la modale après l'animation de fermeture
+    setTimeout(function () {
+      modalbg.style.display = "none";
+      modal.classList.remove("closing");
+    }, 500);
+  }
+
+  // Fonction pour ouvrir la modale
+  function launchModal() {
+    modalbg.style.display = "block"; // Affiche la modale
+    modal.classList.add("opening"); // Ajoute l'animation d'ouverture
+
+    // Désactive le bouton de soumission lorsque la modale est ouverte
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = "grey";
+  }
+});
 
 // Récupération des champs du formulaire
 var firstName = document.getElementById("first"); // Prénom
@@ -112,7 +134,8 @@ function validateBirthdate() {
 // Fonctions pour afficher et enlever les messages d'erreur
 function clearError(input) {
   // Retire le message d'erreur s'il existe
-  var existingError = input.parentElement.querySelector(".error-message");
+  var existingError =
+    input.parentElement.querySelector(".error-message");
   if (existingError) {
     existingError.remove();
   }
@@ -136,78 +159,91 @@ function displayError(input, message) {
 }
 
 // Événement pour soumettre le formulaire
-document.querySelector("form").addEventListener("submit", function (event) {
-  // Prévient le comportement par défaut du formulaire
-  event.preventDefault();
+document
+  .querySelector("form")
+  .addEventListener("submit", function (event) {
+    // Prévient le comportement par défaut du formulaire
+    event.preventDefault();
 
-  // Valide les champs du formulaire
-  var isValid = true;
+    // Valide les champs du formulaire
+    var isValid = true;
 
-  // Vérifie si les champs sont remplis correctement
-  if (firstName.value.length < 2) {
-    displayError(firstName, "Le prénom doit comporter au moins 2 caractères"); // Si le prénom est vide ou a moins de 2 caractères, affiche un message d'erreur
-    isValid = false;
-  } else if (lastName.value.length < 2) {
-    displayError(
-      lastName,
-      "Le nom de famille doit comporter au moins 2 caractères" // Si le nom est vide ou a moins de 2 caractères, affiche un message d'erreur
-    );
-    isValid = false;
-  } else if (!email.value.includes("@")) {
-    displayError(email, "L'adresse électronique n'est pas valide"); // Si l'email ne contient pas de @, affiche un message d'erreur
-    isValid = false;
-  } else if (!validateBirthdate()) {
-    isValid = false; // On ne fait rien ici, la validation de la date de naissance est faite dans validateBirthdate()
-  } else if (isNaN(quantity.value) || quantity.value === "") {
-    displayError(quantity, "Le nombre de tournois doit être inscrit"); // Si la quantité de tournois est vide, affiche un message d'erreur
-    isValid = false;
-  } else if (isNaN(quantity.value)) {
-    displayError(
-      quantity,
-      "Le nombre de tournois doit être une valeur numérique" // Si la quantité de tournois n'est pas un nombre, affiche un message d'erreur
-    );
-    isValid = false;
-  } else if (!document.querySelector('input[name="location"]:checked')) {
-    displayError(
-      document.querySelector('input[name="location"]'),
-      "Un lieu doit être sélectionné" // Si aucun lieu n'est sélectionné, affiche un message d'erreur
-    );
-    isValid = false;
-  } else if (!terms.checked) {
-    displayError(terms, "Les conditions générales doivent être acceptées"); // Si les conditions générales ne sont pas acceptées, affiche un message d'erreur
-    isValid = false;
-  }
-
-  // Validation du formulaire uniquement si tous les champs sont remplis
-  if (isValid) {
-    // Récupère le contenu de la modale
-    var modalContent = document.querySelector(".modal-body");
-
-    // Vérifie si le contenu de la modale existe
-    if (modalContent) {
-      // Supprime tous les enfants du contenu de la modale
-      while (modalContent.firstChild) {
-        modalContent.firstChild.remove();
-      }
-
-      // Crée un message de remerciement
-      var thankYouMessage = document.createElement("h2");
-      thankYouMessage.textContent = "Merci pour votre inscription";
-      thankYouMessage.style.textAlign = "center"; // Centre le texte
-      thankYouMessage.className = "thank-you-msg"; // Ajoute une classe pour le style
-
-      // Crée un bouton de fermeture
-      var closeButton = document.createElement("input");
-      closeButton.type = "submit";
-      closeButton.value = "Fermer";
-      closeButton.className = "btn-close"; // Ajoute une classe pour le style
-
-      // Ajoute le message de remerciement et le bouton de fermeture au contenu de la modale
-      modalContent.appendChild(thankYouMessage);
-      modalContent.appendChild(closeButton);
-
-      // Ajoute un écouteur d'événements au bouton de fermeture pour fermer la modale lorsqu'il est cliqué
-      closeButton.addEventListener("click", closeModal);
+    // Vérifie si les champs sont remplis correctement
+    if (firstName.value.length < 2) {
+      displayError(
+        firstName,
+        "Le prénom doit comporter au moins 2 caractères"
+      ); // Si le prénom est vide ou a moins de 2 caractères, affiche un message d'erreur
+      isValid = false;
+    } else if (lastName.value.length < 2) {
+      displayError(
+        lastName,
+        "Le nom de famille doit comporter au moins 2 caractères" // Si le nom est vide ou a moins de 2 caractères, affiche un message d'erreur
+      );
+      isValid = false;
+    } else if (!email.value.includes("@")) {
+      displayError(email, "L'adresse électronique n'est pas valide"); // Si l'email ne contient pas de @, affiche un message d'erreur
+      isValid = false;
+    } else if (!validateBirthdate()) {
+      isValid = false; // On ne fait rien ici, la validation de la date de naissance est faite dans validateBirthdate()
+    } else if (isNaN(quantity.value) || quantity.value === "") {
+      displayError(
+        quantity,
+        "Le nombre de tournois doit être inscrit"
+      ); // Si la quantité de tournois est vide, affiche un message d'erreur
+      isValid = false;
+    } else if (isNaN(quantity.value)) {
+      displayError(
+        quantity,
+        "Le nombre de tournois doit être une valeur numérique" // Si la quantité de tournois n'est pas un nombre, affiche un message d'erreur
+      );
+      isValid = false;
+    } else if (
+      !document.querySelector('input[name="location"]:checked')
+    ) {
+      displayError(
+        document.querySelector('input[name="location"]'),
+        "Un lieu doit être sélectionné" // Si aucun lieu n'est sélectionné, affiche un message d'erreur
+      );
+      isValid = false;
+    } else if (!terms.checked) {
+      displayError(
+        terms,
+        "Les conditions générales doivent être acceptées"
+      ); // Si les conditions générales ne sont pas acceptées, affiche un message d'erreur
+      isValid = false;
     }
-  }
-});
+
+    // Validation du formulaire uniquement si tous les champs sont remplis
+    if (isValid) {
+      // Récupère le contenu de la modale
+      var modalContent = document.querySelector(".modal-body");
+
+      // Vérifie si le contenu de la modale existe
+      if (modalContent) {
+        // Supprime tous les enfants du contenu de la modale
+        while (modalContent.firstChild) {
+          modalContent.firstChild.remove();
+        }
+
+        // Crée un message de remerciement
+        var thankYouMessage = document.createElement("h2");
+        thankYouMessage.textContent = "Merci pour votre inscription";
+        thankYouMessage.style.textAlign = "center"; // Centre le texte
+        thankYouMessage.className = "thank-you-msg"; // Ajoute une classe pour le style
+
+        // Crée un bouton de fermeture
+        var closeButton = document.createElement("input");
+        closeButton.type = "submit";
+        closeButton.value = "Fermer";
+        closeButton.className = "btn-close"; // Ajoute une classe pour le style
+
+        // Ajoute le message de remerciement et le bouton de fermeture au contenu de la modale
+        modalContent.appendChild(thankYouMessage);
+        modalContent.appendChild(closeButton);
+
+        // Ajoute un écouteur d'événements au bouton de fermeture pour fermer la modale lorsqu'il est cliqué
+        closeButton.addEventListener("click", closeModal);
+      }
+    }
+  });

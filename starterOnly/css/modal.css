@@ -188,7 +188,7 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
-  min-height: 800px;
+  min-height: 750px;
 }
 
 label {
@@ -537,7 +537,7 @@ button:disabled {
   animation: modalclose 0.5s forwards;
 }
 
-.btn-close {
+.close-button {
   position: absolute;
   bottom: 20px;
   right: 30%;
@@ -552,8 +552,9 @@ button:disabled {
   border: 0;
 }
 
-.thank-you-msg {
+.modal-headline {
   display: flex;
+  text-align: center;
   flex-wrap: wrap;
   position: absolute;
   width: 300px;
@@ -561,6 +562,14 @@ button:disabled {
   right: 20%;
   font-weight: 400;
   font-size: 36px;
+}
+
+#modalThankYou {
+  display: none;
+}
+
+#modaelForm {
+  display: none;
 }
 
 @keyframes modalopen {

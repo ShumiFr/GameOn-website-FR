@@ -3,8 +3,12 @@ const modalbg = document.querySelector(".bground"); // Fond de la modale
 const modalBtn = document.querySelectorAll(".modal-btn"); // Boutons pour ouvrir la modale
 const formData = document.querySelectorAll(".formData"); // Données du formulaire
 const modalClose = document.querySelector(".close"); // Bouton pour fermer la modale
-const closeButton = document.querySelector(".close-button"); // Bouton pour fermer la modale
+const closeButton = document.querySelector(".close-button"); // Bouton pour fermer la modale depuis la modaleThankYou
 const submitButton = document.querySelector(".btn-submit"); // Bouton de soumission
+const modal = document.querySelector(".content"); // Contenu de la modale
+
+const modalForm = document.getElementById("modalForm");
+const modalThankYou = document.getElementById("modalThankYou");
 
 // Récupération des champs du formulaire
 const firstName = document.getElementById("first"); // Prénom
@@ -34,21 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   modalClose.addEventListener("click", closeModal);
 
-  const modal = document.querySelector(".content"); // Contenu de la modale
-
   // Fonction pour fermer la modale
   function closeModal() {
     modal.classList.add("closing"); // Ajoute la clase pour l'animation de fermeture
     modal.classList.remove("opening"); // Supprime la classe pour l'animation d'ouverture
 
     // Réinitialise les champs du formulaire
-    if (firstName) firstName.value = "";
-    if (lastName) lastName.value = "";
-    if (email) email.value = "";
-    if (birthdate) birthdate.value = "";
-    if (quantity) quantity.value = "";
-    if (radios) radios.forEach((radio) => (radio.checked = false));
-    if (terms) terms.checked = false;
+    document.querySelector("form").reset();
 
     // Ferme la modale après l'animation de fermeture
     setTimeout(function () {
@@ -59,21 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fonction pour ouvrir la modale
   function launchModal() {
-    const modalForm = document.getElementById("modalForm");
-    const modalThankYou = document.getElementById("modalThankYou");
-
     // Afficher la modale du formulaire
     modalThankYou.style.display = "none";
     modalForm.style.display = "block";
 
     // Réinitialiser le formulaire
-    if (firstName) firstName.value = "";
-    if (lastName) lastName.value = "";
-    if (email) email.value = "";
-    if (birthdate) birthdate.value = "";
-    if (quantity) quantity.value = "";
-    if (radios) radios.forEach((radio) => (radio.checked = false));
-    if (terms) terms.checked = false;
+    document.querySelector("form").reset();
 
     // Désactiver le bouton de soumission
     submitButton.disabled = true;
@@ -91,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fonction pour valider le formulaire
   function validateForm() {
-    // Vérfie si au moins un champ est rempli pour activer le bouton de soumission
+    // Vérifie si au moins un champ est rempli pour activer le bouton de soumission
     const isFormFilled =
       firstName.value ||
       lastName.value ||

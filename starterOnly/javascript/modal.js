@@ -169,41 +169,46 @@ document.addEventListener("DOMContentLoaded", function () {
           "Le prénom doit comporter au moins 2 caractères"
         ); // Si le prénom est vide ou a moins de 2 caractères, affiche un message d'erreur
         isValid = false;
-      } else if (lastName.value.length < 2) {
+      }
+      if (lastName.value.length < 2) {
         displayError(
           lastName,
           "Le nom de famille doit comporter au moins 2 caractères" // Si le nom est vide ou a moins de 2 caractères, affiche un message d'erreur
         );
         isValid = false;
-      } else if (!email.value.includes("@")) {
+      }
+      if (!email.value.includes("@")) {
         displayError(
           email,
           "L'adresse électronique n'est pas valide"
         ); // Si l'email ne contient pas de @, affiche un message d'erreur
         isValid = false;
-      } else if (!validateBirthdate()) {
+      }
+      if (!validateBirthdate()) {
         isValid = false; // On ne fait rien ici, la validation de la date de naissance est faite dans validateBirthdate()
-      } else if (isNaN(quantity.value) || quantity.value === "") {
+      }
+      if (isNaN(quantity.value) || quantity.value === "") {
         displayError(
           quantity,
           "Le nombre de tournois doit être inscrit"
         ); // Si la quantité de tournois est vide, affiche un message d'erreur
         isValid = false;
-      } else if (isNaN(quantity.value)) {
+      }
+      if (isNaN(quantity.value)) {
         displayError(
           quantity,
           "Le nombre de tournois doit être une valeur numérique" // Si la quantité de tournois n'est pas un nombre, affiche un message d'erreur
         );
         isValid = false;
-      } else if (
-        !document.querySelector('input[name="location"]:checked')
-      ) {
+      }
+      if (!document.querySelector('input[name="location"]:checked')) {
         displayError(
           document.querySelector('input[name="location"]'),
           "Un lieu doit être sélectionné" // Si aucun lieu n'est sélectionné, affiche un message d'erreur
         );
         isValid = false;
-      } else if (!terms.checked) {
+      }
+      if (!terms.checked) {
         displayError(
           terms,
           "Les conditions générales doivent être acceptées"

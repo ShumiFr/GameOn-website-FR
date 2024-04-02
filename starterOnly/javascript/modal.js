@@ -33,9 +33,7 @@ function editNav() {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Événement pour ouvrir et fermer la modale
-  modalBtn.forEach((btn) =>
-    btn.addEventListener("click", launchModal)
-  );
+  modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
   modalClose.addEventListener("click", closeModal);
 
   // Fonction pour fermer la modale
@@ -116,10 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Vérifie si la date de naissance est valide
     if (!birthdate.value || isNaN(birthdateValue.getTime())) {
-      displayError(
-        birthdate,
-        "La date de naissance n'est pas valide"
-      );
+      displayError(birthdate, "La date de naissance n'est pas valide");
       return false;
     }
     return true;
@@ -128,8 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Fonctions pour afficher et enlever les messages d'erreur
   function clearError(input) {
     // Retire le message d'erreur s'il existe
-    const existingError =
-      input.parentElement.querySelector(".error-message");
+    const existingError = input.parentElement.querySelector(".error-message");
     if (existingError) {
       existingError.remove();
     }
@@ -140,96 +134,88 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fonction pour afficher un message d'erreur
   function displayError(input, message) {
-    // Créer un élément pour le message d'erreur avec la classe "error-message" et le texte du message
-    const error = document.createElement("div");
-    error.className = "error-message";
-    error.textContent = message;
+    // Vérifie s'il y a déjà un message d'erreur
+    const existingError = input.parentElement.querySelector(".error-message");
+    if (existingError) {
+      // Si un message d'erreur existe déjà, met à jour le texte du message
+      existingError.textContent = message;
+    } else {
+      // Si aucun message d'erreur n'existe, crée un nouvel élément pour le message d'erreur
+      const error = document.createElement("div");
+      error.className = "error-message";
+      error.textContent = message;
 
-    // Ajoute le message d'erreur après l'élément parent de l'input
-    input.parentElement.appendChild(error);
+      // Ajoute le message d'erreur après l'élément parent de l'input
+      input.parentElement.appendChild(error);
+    }
 
     // Change la couleur de la bordure de l'input en rouge
     input.style.borderColor = "red";
   }
 
   // Événement pour soumettre le formulaire
-  document
-    .querySelector("form")
-    .addEventListener("submit", function (event) {
-      // Prévient le comportement par défaut du formulaire
-      event.preventDefault();
+  document.querySelector("form").addEventListener("submit", function (event) {
+    // Prévient le comportement par défaut du formulaire
+    event.preventDefault();
 
-      // Valide les champs du formulaire
-      let isValid = true;
+    // Valide les champs du formulaire
+    let isValid = true;
 
-      // Vérifie si les champs sont remplis correctement
-      if (firstName.value.length < 2) {
-        displayError(
-          firstName,
-          "Le prénom doit comporter au moins 2 caractères"
-        ); // Si le prénom est vide ou a moins de 2 caractères, affiche un message d'erreur
-        isValid = false;
-      }
-      if (lastName.value.length < 2) {
-        displayError(
-          lastName,
-          "Le nom de famille doit comporter au moins 2 caractères" // Si le nom est vide ou a moins de 2 caractères, affiche un message d'erreur
-        );
-        isValid = false;
-      }
-      if (!email.value.includes("@")) {
-        displayError(
-          email,
-          "L'adresse électronique n'est pas valide"
-        ); // Si l'email ne contient pas de @, affiche un message d'erreur
-        isValid = false;
-      }
-      if (!validateBirthdate()) {
-        isValid = false; // On ne fait rien ici, la validation de la date de naissance est faite dans validateBirthdate()
-      }
-      if (isNaN(quantity.value) || quantity.value === "") {
-        displayError(
-          quantity,
-          "Le nombre de tournois doit être inscrit"
-        ); // Si la quantité de tournois est vide, affiche un message d'erreur
-        isValid = false;
-      }
-      if (isNaN(quantity.value)) {
-        displayError(
-          quantity,
-          "Le nombre de tournois doit être une valeur numérique" // Si la quantité de tournois n'est pas un nombre, affiche un message d'erreur
-        );
-        isValid = false;
-      }
-      if (!document.querySelector('input[name="location"]:checked')) {
-        displayError(
-          document.querySelector('input[name="location"]'),
-          "Un lieu doit être sélectionné" // Si aucun lieu n'est sélectionné, affiche un message d'erreur
-        );
-        isValid = false;
-      }
-      if (!terms.checked) {
-        displayError(
-          terms,
-          "Les conditions générales doivent être acceptées"
-        ); // Si les conditions générales ne sont pas acceptées, affiche un message d'erreur
-        isValid = false;
-      }
+    // Vérifie si les champs sont remplis correctement
+    if (firstName.value.length < 2) {
+      displayError(firstName, "Le prénom doit comporter au moins 2 caractères"); // Si le prénom est vide ou a moins de 2 caractères, affiche un message d'erreur
+      isValid = false;
+    }
+    if (lastName.value.length < 2) {
+      displayError(
+        lastName,
+        "Le nom de famille doit comporter au moins 2 caractères" // Si le nom est vide ou a moins de 2 caractères, affiche un message d'erreur
+      );
+      isValid = false;
+    }
+    if (!/\S+@\S+\.\S+/.test(email.value)) {
+      displayError(email, "L'adresse électronique n'est pas valide"); // Si l'email ne correspond pas au format attendu, affiche un message d'erreur
+      isValid = false;
+    }
+    if (!validateBirthdate()) {
+      isValid = false; // On ne fait rien ici, la validation de la date de naissance est faite dans validateBirthdate()
+    }
+    if (isNaN(quantity.value) || quantity.value === "") {
+      displayError(quantity, "Le nombre de tournois doit être inscrit"); // Si la quantité de tournois est vide, affiche un message d'erreur
+      isValid = false;
+    }
+    if (isNaN(quantity.value)) {
+      displayError(
+        quantity,
+        "Le nombre de tournois doit être une valeur numérique" // Si la quantité de tournois n'est pas un nombre, affiche un message d'erreur
+      );
+      isValid = false;
+    }
+    if (!document.querySelector('input[name="location"]:checked')) {
+      displayError(
+        document.querySelector('input[name="location"]'),
+        "Un lieu doit être sélectionné" // Si aucun lieu n'est sélectionné, affiche un message d'erreur
+      );
+      isValid = false;
+    }
+    if (!terms.checked) {
+      displayError(terms, "Les conditions générales doivent être acceptées"); // Si les conditions générales ne sont pas acceptées, affiche un message d'erreur
+      isValid = false;
+    }
 
-      // Validation du formulaire uniquement si tous les champs sont remplis
-      if (isValid) {
-        // Récupère le contenu de la modale
-        const modalForm = document.getElementById("modalForm");
-        const modalThankYou =
-          document.getElementById("modalThankYou");
+    // Validation du formulaire uniquement si tous les champs sont remplis
+    if (isValid) {
+      // Récupère le contenu de la modale
+      const modalForm = document.getElementById("modalForm");
+      const modalThankYou = document.getElementById("modalThankYou");
 
-        // Masquer la première modale (modalForm)
-        modalForm.style.display = "none";
+      // Masquer la première modale (modalForm)
+      modalForm.style.display = "none";
 
-        // Afficher la deuxième modale (modalThankYou)
-        modalThankYou.style.display = "block";
-      }
-    });
+      // Afficher la deuxième modale (modalThankYou)
+      modalThankYou.style.display = "block";
+    }
+  });
 
   // Gestionnaire d'événement pour le bouton close de la modalThankYou
   closeButton.addEventListener("click", function () {

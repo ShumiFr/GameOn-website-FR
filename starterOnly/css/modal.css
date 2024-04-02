@@ -501,7 +501,8 @@ footer {
   .hero-content {
     background: #fff;
     color: #000;
-    padding: 20px;
+    padding: 0;
+    min-width: none;
   }
   .hero-content::after {
     content: unset;
@@ -510,7 +511,7 @@ footer {
     display: none;
   }
   .hero-headline {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
     line-height: normal;
   }
@@ -534,6 +535,14 @@ footer {
   .copyrights {
     margin-top: 20px;
     text-align: center;
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1024px) {
+  .hero-headline {
+    font-size: 60px;
+    font-weight: bold;
+    line-height: normal;
   }
 }
 
